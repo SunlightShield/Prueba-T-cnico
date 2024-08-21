@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.css';  // Agrega un archivo CSS separado para personalizar estilos
 
 const Home = () => {
   const [characters, setCharacters] = useState([]);
@@ -42,8 +43,11 @@ const Home = () => {
         <div className="row">
           {characters.map((character, index) => (
             <div key={index} className="col-md-4 mb-4">
-              <div className="card" onClick={() => handleShowModal(character)}>
-                <img src={character.image} alt={`${character.name.first} ${character.name.last}`} className="card-img-top" />
+              <div 
+                className="card h-100" 
+                onClick={() => handleShowModal(character)} 
+                style={{ backgroundImage: `url(${character.images.main})` }}
+              >
                 <div className="card-body">
                   <h5 className="card-title">{character.name.first} {character.name.last}</h5>
                   <p className="card-text">Especie: {character.species}</p>
@@ -55,7 +59,7 @@ const Home = () => {
         </div>
       </main>
       <footer className="text-center mt-4">
-        <p>&copy; 2024 Mi Aplicación. Todos los derechos reservados.</p>
+        <p>Por Sebastian Espinoza</p>
       </footer>
 
       {/* Modal */}
@@ -66,18 +70,23 @@ const Home = () => {
               <h5 className="modal-title" id="modalPersonajeLabel">
                 {selectedCharacter?.name.first} {selectedCharacter?.name.last}
               </h5>
-                </div>
+            </div>
             <div className="modal-body">
-              <img src={selectedCharacter?.image} alt={`${selectedCharacter?.name.first} ${selectedCharacter?.name.last}`} className="img-fluid mb-3" />
+              <img src={selectedCharacter?.images.main} alt={`${selectedCharacter?.name.first} ${selectedCharacter?.name.last}`} className="img-fluid mb-3" />
               <p><strong>Especie:</strong> {selectedCharacter?.species}</p>
               <p><strong>Trabajo:</strong> {selectedCharacter?.occupation}</p>
               <p><strong>Edad:</strong> {selectedCharacter?.age}</p>
               <p><strong>Sexo:</strong> {selectedCharacter?.gender}</p>
-              <p><strong>Descripción:</strong> {selectedCharacter?.description}</p>
+              <p><strong>Planeta natal:</strong> {selectedCharacter?.homePlanet}</p>
+              <p><strong>Frases:</strong></p>
+              <ul>
+                {selectedCharacter?.sayings.map((saying, index) => (
+                  <li key={index}>{saying}</li>
+                ))}
+              </ul>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              
+              <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
